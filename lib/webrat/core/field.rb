@@ -47,8 +47,9 @@ module Webrat
     end
     
     def to_param
-      value = @value.to_s.gsub('&', '%26')
-      param_parser.parse_query_parameters("#{name}=#{value}")
+	# We create the pair directly, because we assume that @value
+	# is not CGI escaped.
+	ActionController::UrlEncodedPairParser.new([[name, @value]]).result
     end
     
     def set(value)
@@ -252,14 +253,6 @@ module Webrat
     def set(value, content_type = nil)
       super(value)
       @content_type = content_type
-    end
-
-    def to_param
-      if @value.nil?
-        super
-      else
-        replace_param_value(super, @value, test_uploaded_file)
-      end
     end
     
   protected
