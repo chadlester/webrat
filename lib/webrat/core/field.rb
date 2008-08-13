@@ -47,9 +47,9 @@ module Webrat
     end
     
     def to_param
-	# We create the pair directly, because we assume that @value
-	# is not CGI escaped.
-	ActionController::UrlEncodedPairParser.new([[name, @value]]).result
+      # We create the pair directly, because we assume that @value
+      # is not CGI escaped.
+      ActionController::UrlEncodedPairParser.new([[name, @value]]).result
     end
     
     def set(value)
@@ -248,21 +248,12 @@ module Webrat
   
   class FileField < Field
 
-    attr_accessor :content_type
-
-    def set(value, content_type = nil)
-      super(value)
-      @content_type = content_type
+    def set(path, *file_params)
+      @value = ActionController::TestUploadedFile.new(path, *file_params)
     end
     
-  protected
-  
-    def test_uploaded_file
-      if content_type
-        ActionController::TestUploadedFile.new(@value, content_type)
-      else
-        ActionController::TestUploadedFile.new(@value)
-      end
+    def content_type()
+      return @value.content_type
     end
 
   end

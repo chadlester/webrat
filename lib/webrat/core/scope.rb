@@ -82,8 +82,8 @@ module Webrat
     # Example:
     #   attaches_file "Resume", "/path/to/the/resume.txt"
     #   attaches_file "Photo", "/path/to/the/image.png", "image/png"
-    def attaches_file(id_or_name_or_label, path, content_type = nil)
-      find_field(id_or_name_or_label, FileField).set(path, content_type)
+    def attaches_file(id_or_name_or_label, path, *file_params)
+      find_field(id_or_name_or_label, FileField).set(path, *file_params)
     end
 
     alias_method :attach_file, :attaches_file
